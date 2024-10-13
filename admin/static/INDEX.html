@@ -92,7 +92,45 @@
   text-decoration: none;
   cursor: pointer;
 }
+    .bus-search {
+      margin-top: 30px;
+      text-align: center;
+    }
 
+    .bus-search input[type="text"] {
+      width: 70%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .bus-search button {
+      padding: 10px 20px;
+      background-color: #1246b6;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .bus-search-results {
+      margin-top: 20px;
+    }
+
+    .bus-list {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    .bus-list li {
+      padding: 10px;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .no-results {
+      color: red;
+    }
   </style>
 </head>
 
@@ -113,7 +151,18 @@
         <input type="submit" value="Sign in" class="btn">
         <p class="forgot-pass"><a href="#" id="forgot-password-link">Forgot Password?</a></p>
       </form>
-
+      
+      <!-- Bus Search Feature -->
+      <div class="bus-search">
+        <h2>Search for a Bus</h2>
+        <input type="text" id="bus-search-input" placeholder="Enter Bus Number or Route">
+        <button onclick="searchBus()">Search</button>
+        <div class="bus-search-results" id="bus-search-results">
+          <ul class="bus-list" id="bus-list"></ul>
+        </div>
+      </div>
+    </div>
+  </div>
       <form action="" class="sign-up-form" id="signup-form">
         <h2 class="title">Sign up</h2>
         <div class="input-field">
@@ -382,6 +431,38 @@ sendResetLinkButton.addEventListener('click', function () {
     resetNotification.classList.add('show');
   }
 });
+        const buses = [
+      { number: 'HP01A1234', route: 'Shimla to Manali' },
+      { number: 'HP02B5678', route: 'Dharamshala to Shimla' },
+      { number: 'HP03C9101', route: 'Manali to Kullu' },
+      { number: 'HP04D2345', route: 'Kangra to Dalhousie' },
+      { number: 'HP05E6789', route: 'Solan to Mandi' }
+    ];
+
+    // Function to search for buses
+    function searchBus() {
+      const searchTerm = document.getElementById('bus-search-input').value.toLowerCase();
+      const results = buses.filter(bus => 
+        bus.number.toLowerCase().includes(searchTerm) || 
+        bus.route.toLowerCase().includes(searchTerm)
+      );
+
+      const busList = document.getElementById('bus-list');
+      busList.innerHTML = ''; // Clear previous results
+
+      if (results.length > 0) {
+        results.forEach(bus => {
+          const li = document.createElement('li');
+          li.textContent = `${bus.number} - ${bus.route}`;
+          busList.appendChild(li);
+        });
+      } else {
+        const li = document.createElement('li');
+        li.textContent = 'No buses found matching the search criteria.';
+        li.classList.add('no-results');
+        busList.appendChild(li);
+      }
+    }
 
   </script>
 </body>
